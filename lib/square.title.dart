@@ -12,9 +12,9 @@ class MySquareTitle extends StatelessWidget {
       children: [
         Text(
           title!,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        Text(date!, style: TextStyle(color: Colors.grey, fontSize: 14)),
+        Text(date!, style: TextStyle(color: const Color.fromARGB(255, 94, 94, 94), fontSize: 16)),
       ],
     );
   }

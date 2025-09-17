@@ -6,12 +6,14 @@ class MySquare extends StatelessWidget {
   final String? title;
   final String? date;
   final double? price;
+  final VoidCallback? deleteExpense;
 
   const MySquare({
     super.key,
     @required this.title,
     @required this.date,
     @required this.price,
+    @required this.deleteExpense,
   });
 
   @override
@@ -28,9 +30,15 @@ class MySquare extends StatelessWidget {
         ],
       ),
       width: double.infinity,
-      margin: EdgeInsets.all(2),
+      height: 65,
+      margin: EdgeInsets.symmetric(vertical: 12),
       padding: EdgeInsets.all(4),
-      child: MySquareContent(price: price, title: title, date: date),
+      child: MySquareContent(
+        price: price,
+        title: title,
+        date: date,
+        deleteExpense: deleteExpense,
+      ),
     );
   }
 }

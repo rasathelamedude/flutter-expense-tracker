@@ -7,12 +7,14 @@ class MySquareContent extends StatelessWidget {
   final String? title;
   final String? date;
   final double? price;
+  final VoidCallback? deleteExpense;
 
   const MySquareContent({
     super.key,
     @required this.price,
     @required this.title,
     @required this.date,
+    @required this.deleteExpense,
   });
 
   @override
@@ -27,7 +29,10 @@ class MySquareContent extends StatelessWidget {
         MySquareTitle(title: title, date: date),
 
         // Delete Action
-        Icon(Icons.delete, size: 28, color: Colors.red),
+        IconButton(
+          onPressed: deleteExpense,
+          icon: Icon(Icons.delete, color: Colors.red, size: 24),
+        ),
       ],
     );
   }

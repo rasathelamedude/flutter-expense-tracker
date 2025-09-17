@@ -15,9 +15,16 @@ class MyApp extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _HomePageState();
+  }
+}
+
+class _HomePageState extends State<HomePage> {
   final List<Map<String, Object>> _expenses = [
     {"title": "expense 1", "date": "May, 28, 2019", "price": 17.99},
     {"title": "expense 2", "date": "July, 30, 2019", "price": 9.99},
@@ -26,6 +33,12 @@ class HomePage extends StatelessWidget {
     {"title": "expense 5", "date": "June, 20, 2019", "price": 10.99},
     {"title": "expense 6", "date": "May, 18, 2019", "price": 12.99},
   ];
+
+  deleteExpense(index) {
+    setState(() {
+      _expenses.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,43 +50,22 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           // Chart View
-          SizedBox(height: 200, child: BarChart(BarChartData())),
+          Container(
+            height: 200,
+            margin: EdgeInsets.symmetric(vertical: 5),
+            child: BarChart(BarChartData()),
+          ),
 
           // Expense List View
           Expanded(
-            child: ListView(
-              children: [
-                MySquare(
-                  title: _expenses[0]["title"] as String,
-                  date: _expenses[0]["date"] as String,
-                  price: _expenses[0]["price"] as double,
-                ),
-                MySquare(
-                  title: _expenses[1]["title"] as String,
-                  date: _expenses[1]["date"] as String,
-                  price: _expenses[1]["price"] as double,
-                ),
-                MySquare(
-                  title: _expenses[2]["title"] as String,
-                  date: _expenses[2]["date"] as String,
-                  price: _expenses[2]["price"] as double,
-                ),
-                MySquare(
-                  title: _expenses[3]["title"] as String,
-                  date: _expenses[3]["date"] as String,
-                  price: _expenses[3]["price"] as double,
-                ),
-                MySquare(
-                  title: _expenses[4]["title"] as String,
-                  date: _expenses[4]["date"] as String,
-                  price: _expenses[4]["price"] as double,
-                ),
-                MySquare(
-                  title: _expenses[5]["title"] as String,
-                  date: _expenses[5]["date"] as String,
-                  price: _expenses[5]["price"] as double,
-                ),
-              ],
+            child: ListView.builder(
+              itemCount: _expenses.length,
+              itemBuilder: (context, index) => MySquare(
+                title: _expenses[index]["title"] as String,
+                date: _expenses[index]["date"] as String,
+                price: _expenses[index]["price"] as double,
+                deleteExpense: () => deleteExpense(index),
+              ),
             ),
           ),
         ],
