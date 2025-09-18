@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-import './square.dart';
+import './my_transaction.dart';
+import './transaction_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,18 +26,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Map<String, Object>> _expenses = [
-    {"title": "expense 1", "date": "May, 28, 2019", "price": 17.99},
-    {"title": "expense 2", "date": "July, 30, 2019", "price": 9.99},
-    {"title": "expense 3", "date": "Apr, 15, 2019", "price": 25.99},
-    {"title": "expense 4", "date": "May, 28, 2019", "price": 18.99},
-    {"title": "expense 5", "date": "June, 20, 2019", "price": 10.99},
-    {"title": "expense 6", "date": "May, 18, 2019", "price": 12.99},
+  final List<Transaction> _transactions = [
+    Transaction(id: "1", title: "Title 1", price: 10.99, date: DateTime.now()),
+    Transaction(id: "2", title: "Title 2", price: 15.99, date: DateTime.now()),
+    Transaction(id: "3", title: "Title 3", price: 20.99, date: DateTime.now()),
   ];
 
   void deleteExpense(index) {
     setState(() {
-      _expenses.removeAt(index);
+      _transactions.removeAt(index);
     });
   }
 
@@ -114,11 +112,11 @@ class _HomePageState extends State<HomePage> {
           // Expense List View
           Expanded(
             child: ListView.builder(
-              itemCount: _expenses.length,
-              itemBuilder: (context, index) => MySquare(
-                title: _expenses[index]["title"] as String,
-                date: _expenses[index]["date"] as String,
-                price: _expenses[index]["price"] as double,
+              itemCount: _transactions.length,
+              itemBuilder: (context, index) => MyTransaction(
+                title: _transactions[index].title,
+                date: _transactions[index].date,
+                price: _transactions[index].price,
                 deleteExpense: () => deleteExpense(index),
               ),
             ),

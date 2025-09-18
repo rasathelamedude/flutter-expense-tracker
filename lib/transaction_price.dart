@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MySquarePrice extends StatelessWidget {
+class MyTransactionPrice extends StatelessWidget {
   final double? price;
 
-  const MySquarePrice({super.key, @required this.price});
+  const MyTransactionPrice({super.key, @required this.price});
 
   @override
   Widget build(BuildContext context) {

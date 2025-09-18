@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-import './square.content.dart';
+import './transaction_title_date.dart';
+import './transaction_price.dart';
 
-class MySquare extends StatelessWidget {
+class MyTransaction extends StatelessWidget {
   final String? title;
-  final String? date;
+  final DateTime? date;
   final double? price;
   final VoidCallback? deleteExpense;
 
-  const MySquare({
+  const MyTransaction({
     super.key,
     @required this.title,
     @required this.date,
@@ -33,11 +34,21 @@ class MySquare extends StatelessWidget {
       height: 65,
       margin: EdgeInsets.symmetric(vertical: 12),
       padding: EdgeInsets.all(4),
-      child: MySquareContent(
-        price: price,
-        title: title,
-        date: date,
-        deleteExpense: deleteExpense,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Price
+          MyTransactionPrice(price: price),
+
+          // Title and Date
+          MyTransactionTitleDate(title: title, date: date),
+
+          // Delete Action
+          IconButton(
+            onPressed: deleteExpense,
+            icon: Icon(Icons.delete, color: Colors.red, size: 24),
+          ),
+        ],
       ),
     );
   }
