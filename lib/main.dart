@@ -34,10 +34,65 @@ class _HomePageState extends State<HomePage> {
     {"title": "expense 6", "date": "May, 18, 2019", "price": 12.99},
   ];
 
-  deleteExpense(index) {
+  void deleteExpense(index) {
     setState(() {
       _expenses.removeAt(index);
     });
+  }
+
+  void _startAddExpense() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) {
+        return Padding(
+          padding: EdgeInsetsGeometry.only(
+            top: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            right: 16,
+            left: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Text Fields
+              TextField(decoration: InputDecoration(labelText: "Expense Name")),
+              TextField(
+                decoration: InputDecoration(labelText: "Expense Date"),
+                keyboardType: TextInputType.datetime,
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: "Amount Spent"),
+                keyboardType: TextInputType.number,
+              ),
+
+              // Space
+              const SizedBox(height: 20),
+
+              // Action Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Cancel"),
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Add"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -69,6 +124,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: _startAddExpense,
+        child: Icon(Icons.add),
       ),
     );
   }
