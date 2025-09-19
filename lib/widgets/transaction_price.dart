@@ -8,11 +8,15 @@ class MyTransactionPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.deepPurple,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.deepPurple, width: 1),
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.all(8),
       child: Text(
-        "$price",
+        "\$$price",
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: TextStyle(fontSize: 20, color: Colors.deepPurple),
       ),
     );
   }

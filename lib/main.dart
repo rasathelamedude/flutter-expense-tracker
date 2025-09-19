@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-import './my_transaction.dart';
-import './transaction_model.dart';
+import './models/transaction_model.dart';
+import './widgets/transaction_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,17 +26,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(id: "1", title: "Title 1", price: 10.99, date: DateTime.now()),
-    Transaction(id: "2", title: "Title 2", price: 15.99, date: DateTime.now()),
-    Transaction(id: "3", title: "Title 3", price: 20.99, date: DateTime.now()),
-  ];
+  final titleController = TextEditingController();
+  final priceController = TextEditingController();
+  final dateController = TextEditingController();
 
-  void deleteExpense(index) {
-    setState(() {
-      _transactions.removeAt(index);
-    });
-  }
+  final List<Transaction> userTransactions = [
+    Transaction(id: 1, title: "Title 1", price: 10.99, date: DateTime.now()),
+    Transaction(id: 2, title: "Title 2", price: 15.99, date: DateTime.now()),
+    Transaction(id: 3, title: "Title 3", price: 20.99, date: DateTime.now()),
+  ];
 
   void _startAddExpense() {
     showModalBottomSheet(
@@ -54,14 +52,19 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Text Fields
-              TextField(decoration: InputDecoration(labelText: "Expense Name")),
+              TextField(
+                decoration: InputDecoration(labelText: "Expense Name"),
+                controller: titleController,
+              ),
               TextField(
                 decoration: InputDecoration(labelText: "Expense Date"),
                 keyboardType: TextInputType.datetime,
+                controller: dateController,
               ),
               TextField(
                 decoration: InputDecoration(labelText: "Amount Spent"),
                 keyboardType: TextInputType.number,
+                controller: priceController,
               ),
 
               // Space
@@ -80,7 +83,16 @@ class _HomePageState extends State<HomePage> {
 
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      setState(() {
+                        userTransactions.add(
+                          Transaction(
+                            id: (userTransactions.length + 1),
+                            title: titleController.text,
+                            price: double.parse(priceController.text),
+                            date: DateTime.tryParse(dateController.text),
+                          ),
+                        );
+                      });
                     },
                     child: Text("Add"),
                   ),
@@ -91,6 +103,12 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  void deleteExpense(index) {
+    setState(() {
+      userTransactions.removeAt(index);
+    });
   }
 
   @override
@@ -111,14 +129,9 @@ class _HomePageState extends State<HomePage> {
 
           // Expense List View
           Expanded(
-            child: ListView.builder(
-              itemCount: _transactions.length,
-              itemBuilder: (context, index) => MyTransaction(
-                title: _transactions[index].title,
-                date: _transactions[index].date,
-                price: _transactions[index].price,
-                deleteExpense: () => deleteExpense(index),
-              ),
+            child: TransactionList(
+              userTransactions: userTransactions,
+              deleteExpense: deleteExpense,
             ),
           ),
         ],

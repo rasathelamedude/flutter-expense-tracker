@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+
+import '../models/transaction_model.dart';
+import './my_transaction.dart';
+
+class TransactionList extends StatelessWidget {
+  final List<Transaction>? userTransactions;
+  final void Function(int)? deleteExpense;
+
+  const TransactionList({super.key, this.userTransactions, this.deleteExpense});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: userTransactions!.length,
+      itemBuilder: (context, index) => MyTransaction(
+        title: userTransactions![index].title,
+        date: userTransactions![index].date,
+        price: userTransactions![index].price,
+        deleteExpense: () => deleteExpense!(index),
+      ),
+    );
+  }
+}
