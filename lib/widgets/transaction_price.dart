@@ -14,7 +14,7 @@ class MyTransactionPrice extends StatelessWidget {
       ),
       padding: EdgeInsets.all(8),
       child: Text(
-        "\$$price",
+        "\$${price!.toStringAsFixed(2)}",
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 20, color: Colors.deepPurple),
       ),

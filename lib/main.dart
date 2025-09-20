@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   final titleController = TextEditingController();
   final priceController = TextEditingController();
   final dateController = TextEditingController();
+  String? errorTitleText;
+  String? errorPriceText;
 
   final List<Transaction> userTransactions = [
     Transaction(id: 1, title: "Title 1", price: 10.99, date: DateTime.now()),
@@ -53,16 +55,22 @@ class _HomePageState extends State<HomePage> {
             children: [
               // Text Fields
               TextField(
-                decoration: InputDecoration(labelText: "Expense Name"),
+                decoration: InputDecoration(
+                  labelText: "Expense Name",
+                  errorText: errorTitleText,
+                ),
                 controller: titleController,
               ),
+              // TextField(
+              //   decoration: InputDecoration(labelText: "Expense Date"),
+              //   keyboardType: TextInputType.datetime,
+              //   controller: dateController,
+              // ),
               TextField(
-                decoration: InputDecoration(labelText: "Expense Date"),
-                keyboardType: TextInputType.datetime,
-                controller: dateController,
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: "Amount Spent"),
+                decoration: InputDecoration(
+                  labelText: "Amount Spent",
+                  errorText: errorPriceText,
+                ),
                 keyboardType: TextInputType.number,
                 controller: priceController,
               ),
@@ -83,16 +91,32 @@ class _HomePageState extends State<HomePage> {
 
                   ElevatedButton(
                     onPressed: () {
-                      setState(() {
-                        userTransactions.add(
-                          Transaction(
-                            id: (userTransactions.length + 1),
-                            title: titleController.text,
-                            price: double.parse(priceController.text),
-                            date: DateTime.tryParse(dateController.text),
-                          ),
-                        );
-                      });
+                      errorTitleText = titleController.text.isEmpty
+                          ? "Title must have a value"
+                          : null;
+
+                      errorPriceText = priceController.text.isEmpty
+                          ? "You must enter a value"
+                          : null;
+
+                      if (titleController.text.isNotEmpty &&
+                          priceController.text.isNotEmpty) {
+                        Navigator.of(context).pop();
+                        
+                        setState(() {
+                          userTransactions.add(
+                            Transaction(
+                              id: (userTransactions.length + 1),
+                              title: titleController.text,
+                              price: double.parse(priceController.text),
+                              date: DateTime.now(),
+                            ),
+                          );
+                        });
+
+                        titleController.text = "";
+                        priceController.text = "";
+                      }
                     },
                     child: Text("Add"),
                   ),
