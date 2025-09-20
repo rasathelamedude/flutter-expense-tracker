@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class TransactionForm extends StatelessWidget {
-  final titleController = TextEditingController();
-  final priceController = TextEditingController();
-  final dateController = TextEditingController();
-  String? errorTitleText;
-  String? errorPriceText;
 
+class TransactionForm extends StatefulWidget {
   final void Function(String, String)? addTransaction;
 
-  TransactionForm({super.key, @required this.addTransaction});
+  const TransactionForm({super.key, @required this.addTransaction});
+
+  @override
+  State<TransactionForm> createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
+  final titleController = TextEditingController();
+
+  final priceController = TextEditingController();
+
+  final dateController = TextEditingController();
+
+  String? errorTitleText;
+
+  String? errorPriceText;
 
   void submitForm(BuildContext context) {
     errorTitleText = titleController.text.isEmpty
@@ -24,7 +33,7 @@ class TransactionForm extends StatelessWidget {
     if (titleController.text.isNotEmpty && priceController.text.isNotEmpty) {
       Navigator.of(context).pop();
 
-      addTransaction!(titleController.text, priceController.text);
+      widget.addTransaction!(titleController.text, priceController.text);
 
       titleController.text = "";
       priceController.text = "";
