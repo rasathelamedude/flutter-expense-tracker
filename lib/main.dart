@@ -12,7 +12,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "Expenss Tracker", home: HomePage());
+    return MaterialApp(
+      title: "Expense Tracker",
+      home: HomePage(),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        textTheme: ThemeData.light().textTheme.copyWith(
+          titleLarge: TextStyle(fontSize: 30),
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
   }
 }
 
@@ -67,7 +80,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Personal Expenses", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Column(
         children: [
@@ -90,6 +103,7 @@ class _HomePageState extends State<HomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: _startAddExpense,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.add),
       ),
     );

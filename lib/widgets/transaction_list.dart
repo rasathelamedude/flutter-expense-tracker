@@ -11,14 +11,16 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: userTransactions!.length,
-      itemBuilder: (context, index) => MyTransaction(
-        title: userTransactions![index].title,
-        date: userTransactions![index].date,
-        price: userTransactions![index].price,
-        deleteExpense: () => deleteExpense!(index),
-      ),
-    );
+    return userTransactions!.isEmpty
+        ? Center(child: Text("No transactions to display..."))
+        : ListView.builder(
+            itemCount: userTransactions!.length,
+            itemBuilder: (context, index) => MyTransaction(
+              title: userTransactions![index].title,
+              date: userTransactions![index].date,
+              price: userTransactions![index].price,
+              deleteExpense: () => deleteExpense!(index),
+            ),
+          );
   }
 }
