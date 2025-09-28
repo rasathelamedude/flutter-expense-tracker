@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
-  final void Function(String, String)? addTransaction;
+  final void Function(String, String, DateTime)? addTransaction;
 
   const TransactionForm({super.key, @required this.addTransaction});
 
@@ -35,7 +35,7 @@ class _TransactionFormState extends State<TransactionForm> {
     }
     Navigator.of(context).pop();
 
-    widget.addTransaction!(_titleController.text, _priceController.text);
+    widget.addTransaction!(_titleController.text, _priceController.text, _selectedDate!);
 
     _titleController.text = "";
     _priceController.text = "";

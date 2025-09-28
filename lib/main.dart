@@ -62,14 +62,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void addTransaction(title, price) {
+  void addTransaction(title, price, date) {
     setState(() {
       userTransactions.add(
         Transaction(
           id: userTransactions.length + 1,
           title: title,
           price: double.parse(price),
-          date: DateTime.now(),
+          date: date,
         ),
       );
     });
