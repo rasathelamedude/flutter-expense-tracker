@@ -1,9 +1,9 @@
-import 'package:expenss_tracker/widgets/new_transaction_form.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 import './models/transaction_model.dart';
 import './widgets/transaction_list.dart';
+import './widgets/new_transaction_form.dart';
+import './widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -46,6 +46,12 @@ class _HomePageState extends State<HomePage> {
     Transaction(id: 3, title: "Title 3", price: 20.99, date: DateTime.now()),
   ];
 
+  List<Transaction>? get _recentTransactions {
+    return userTransactions.where((tx) {
+      return tx.date!.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   void _startAddExpense() {
     showModalBottomSheet(
       context: context,
@@ -79,16 +85,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Expenses", style: TextStyle(color: Colors.white)),
+        title: Text(
+          "Personal Expenses",
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Column(
         children: [
           // Chart View
           Container(
-            height: 200,
             margin: EdgeInsets.symmetric(vertical: 5),
-            child: BarChart(BarChartData()),
+            child: Chart(recentTransactions: _recentTransactions),
           ),
 
           // Expense List View

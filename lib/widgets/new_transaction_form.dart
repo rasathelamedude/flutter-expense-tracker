@@ -12,13 +12,10 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
-
   final priceController = TextEditingController();
-
   final dateController = TextEditingController();
 
   String? errorTitleText;
-
   String? errorPriceText;
 
   void submitForm(BuildContext context) {
