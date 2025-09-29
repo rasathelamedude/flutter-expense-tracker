@@ -83,18 +83,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Personal Expenses",
-          style: TextStyle(color: Colors.white, fontSize: 24),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+    final appBar = AppBar(
+      title: Text(
+        "Personal Expenses",
+        style: TextStyle(color: Colors.white, fontSize: 24),
       ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+    );
+
+    return Scaffold(
+      appBar: appBar,
+
       body: Column(
         children: [
           // Chart View
           Container(
+            height:
+                (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    MediaQuery.of(context).padding.top) *
+                0.25,
             margin: EdgeInsets.symmetric(vertical: 5),
             child: Chart(recentTransactions: _recentTransactions),
           ),

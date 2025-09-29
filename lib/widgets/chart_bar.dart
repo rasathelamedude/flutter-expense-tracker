@@ -14,51 +14,58 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Total Amount Spent
-        Container(
-          height: 20,
-          child: FittedBox(
-            child: Text("\$${spendingAmount!.toStringAsFixed(0)}"),
-          ),
-        ),
-
-        // Spacing
-        SizedBox(height: 4),
-
-        // Bar
-        Container(
-          height: 60,
-          width: 10,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
-                  color: Color.fromRGBO(220, 220, 220, 1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          children: [
+            // Total Amount Spent
+            Container(
+              height: constraints.maxHeight * 0.15,
+              child: FittedBox(
+                child: Text("\$${spendingAmount!.toStringAsFixed(0)}"),
               ),
-              FractionallySizedBox(
-                heightFactor: spendingPercentage,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(10),
+            ),
+
+            // Spacing
+            SizedBox(height: constraints.maxHeight * 0.05),
+
+            // Bar
+            Container(
+              height: constraints.maxHeight * 0.6,
+              width: 10,
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1),
+                      color: Color.fromRGBO(220, 220, 220, 1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
-                ),
+                  FractionallySizedBox(
+                    heightFactor: spendingPercentage,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
 
-        // Spacing
-        SizedBox(height: 4),
+            // Spacing
+            SizedBox(height: constraints.maxHeight * 0.05),
 
-        // Day of the week
-        Text(label!),
-      ],
+            // Day of the week
+            Container(
+              height: constraints.maxHeight * 0.15,
+              child: FittedBox(child: Text(label!)),
+            ),
+          ],
+        );
+      },
     );
   }
 }
