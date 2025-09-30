@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 
 import './models/transaction_model.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction_form.dart';
 import './widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // To prevent rotating;
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,6 +55,8 @@ class _HomePageState extends State<HomePage> {
     Transaction(id: 3, title: "Title 3", price: 20.99, date: DateTime.now()),
   ];
 
+  bool _showChart = false;
+
   List<Transaction>? get _recentTransactions {
     return userTransactions.where((tx) {
       return tx.date!.isAfter(DateTime.now().subtract(Duration(days: 7)));
@@ -83,6 +94,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       title: Text(
         "Personal Expenses",
@@ -91,29 +105,75 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Theme.of(context).colorScheme.primary,
     );
 
+    final transactionListWidget = Expanded(
+      child: TransactionList(
+        userTransactions: userTransactions,
+        deleteExpense: deleteTransaction,
+      ),
+    );
+
     return Scaffold(
       appBar: appBar,
 
       body: Column(
         children: [
-          // Chart View
-          Container(
-            height:
-                (MediaQuery.of(context).size.height -
-                    appBar.preferredSize.height -
-                    MediaQuery.of(context).padding.top) *
-                0.25,
-            margin: EdgeInsets.symmetric(vertical: 5),
-            child: Chart(recentTransactions: _recentTransactions),
-          ),
-
-          // Expense List View
-          Expanded(
-            child: TransactionList(
-              userTransactions: userTransactions,
-              deleteExpense: deleteTransaction,
+          // Switch in landscape;
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _showChart == false ? "Show Chart" : "Show Transactions",
+                  style: TextStyle(fontSize: 18),
+                ),
+                Switch(
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
             ),
-          ),
+
+          // Chart in portrait
+          if (!isLandscape) // Chart View
+            Container(
+              height:
+                  (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.25,
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: Chart(recentTransactions: _recentTransactions),
+            ),
+
+          // Transaction List in portrait
+          if (!isLandscape) transactionListWidget,
+
+          // Either or case in Landscape
+          if (isLandscape)
+            _showChart == true
+                ?
+                  // Chart View
+                  Container(
+                    height:
+                        (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.7,
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Chart(recentTransactions: _recentTransactions),
+                  )
+                :
+                  // Expense List View
+                  Expanded(
+                    child: TransactionList(
+                      userTransactions: userTransactions,
+                      deleteExpense: deleteTransaction,
+                    ),
+                  ),
         ],
       ),
 

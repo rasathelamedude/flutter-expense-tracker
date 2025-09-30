@@ -12,7 +12,11 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return userTransactions!.isEmpty
-        ? Center(child: Text("No transactions to display..."))
+        ? LayoutBuilder(
+            builder: (context, constraints) {
+              return Center(child: Text("No transactions to display..."));
+            },
+          )
         : ListView.builder(
             itemCount: userTransactions!.length,
             itemBuilder: (context, index) => MyTransaction(
