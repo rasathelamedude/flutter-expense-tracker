@@ -34,10 +34,16 @@ class MyTransaction extends StatelessWidget {
             MyTransactionTitleDate(title: title, date: date),
 
             // Delete Action
-            IconButton(
-              onPressed: deleteExpense,
-              icon: Icon(Icons.delete, color: Colors.red, size: 28),
-            ),
+            MediaQuery.of(context).size.width > 460
+                ? ElevatedButton.icon(
+                    onPressed: deleteExpense,
+                    icon: Icon(Icons.delete, color: Colors.red, size: 28),
+                    label: Text("Delete Transaction"),
+                  )
+                : IconButton(
+                    onPressed: deleteExpense,
+                    icon: Icon(Icons.delete, color: Colors.red, size: 28),
+                  ),
           ],
         ),
       ),

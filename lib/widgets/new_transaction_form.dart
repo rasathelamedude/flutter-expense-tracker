@@ -66,7 +66,7 @@ class _TransactionFormState extends State<TransactionForm> {
       child: Padding(
         padding: EdgeInsetsGeometry.only(
           top: 16,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           right: 16,
           left: 16,
         ),
