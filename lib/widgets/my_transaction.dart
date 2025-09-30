@@ -38,7 +38,7 @@ class MyTransaction extends StatelessWidget {
                 ? ElevatedButton.icon(
                     onPressed: deleteExpense,
                     icon: Icon(Icons.delete, color: Colors.red, size: 28),
-                    label: Text("Delete Transaction"),
+                    label: Text("Delete", style: TextStyle(color: Colors.red)),
                   )
                 : IconButton(
                     onPressed: deleteExpense,

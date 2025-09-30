@@ -94,8 +94,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+        mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: Text(
@@ -141,9 +142,9 @@ class _HomePageState extends State<HomePage> {
           if (!isLandscape) // Chart View
             Container(
               height:
-                  (MediaQuery.of(context).size.height -
+                  (mediaQuery.size.height -
                       appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
+                      mediaQuery.padding.top) *
                   0.25,
               margin: EdgeInsets.symmetric(vertical: 5),
               child: Chart(recentTransactions: _recentTransactions),
@@ -159,9 +160,9 @@ class _HomePageState extends State<HomePage> {
                   // Chart View
                   Container(
                     height:
-                        (MediaQuery.of(context).size.height -
+                        (mediaQuery.size.height -
                             appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
+                            mediaQuery.padding.top) *
                         0.7,
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Chart(recentTransactions: _recentTransactions),
