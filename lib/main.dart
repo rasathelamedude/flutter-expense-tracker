@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 // import 'package:flutter/services.dart';
 
 import './models/transaction_model.dart';
@@ -21,20 +24,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Expense Tracker",
-      home: HomePage(),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        textTheme: ThemeData.light().textTheme.copyWith(
-          titleLarge: TextStyle(fontSize: 30),
-        ),
-        appBarTheme: AppBarTheme(
-          titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
+    return Platform.isIOS
+        ? CupertinoApp(
+            title: "Expense Tracker",
+            home: HomePage(),
+            theme: CupertinoThemeData(
+              brightness: Brightness.light,
+              primaryColor: CupertinoColors.systemPurple,
+              primaryContrastingColor: CupertinoColors.white,
+              textTheme: CupertinoTextThemeData(
+                textStyle: TextStyle(fontSize: 16),
+                navTitleTextStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+          )
+        : MaterialApp(
+            title: "Expense Tracker",
+            home: HomePage(),
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              textTheme: ThemeData.light().textTheme.copyWith(
+                titleLarge: TextStyle(fontSize: 30),
+              ),
+              appBarTheme: AppBarTheme(
+                titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
   }
 }
 
@@ -94,17 +114,30 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = Platform.isIOS;
     final mediaQuery = MediaQuery.of(context);
-    final isLandscape =
-        mediaQuery.orientation == Orientation.landscape;
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final appBar = AppBar(
-      title: Text(
-        "Personal Expenses",
-        style: TextStyle(color: Colors.white, fontSize: 24),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
-    );
+    final PreferredSizeWidget appBar = isIOS
+        ? CupertinoNavigationBar(
+            middle: Text("Personal Expense Tracker"),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: _startAddExpense,
+                  icon: Icon(CupertinoIcons.add),
+                ),
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text(
+              "Personal Expenses",
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          );
 
     final transactionListWidget = Expanded(
       child: TransactionList(
@@ -113,10 +146,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-    return Scaffold(
-      appBar: appBar,
-
-      body: Column(
+    final pageBody = SafeArea(
+      // Safe Area excludes nav bar size in the overall page height;
+      child: Column(
         children: [
           // Switch in landscape;
           if (isLandscape)
@@ -127,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   _showChart == false ? "Show Chart" : "Show Transactions",
                   style: TextStyle(fontSize: 18),
                 ),
-                Switch(
+                Switch.adaptive(
                   value: _showChart,
                   onChanged: (value) {
                     setState(() {
@@ -177,12 +209,25 @@ class _HomePageState extends State<HomePage> {
                   ),
         ],
       ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _startAddExpense,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(Icons.add),
-      ),
     );
+
+    return isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: appBar as ObstructingPreferredSizeWidget,
+            child: pageBody,
+          )
+        : Scaffold(
+            appBar: appBar,
+
+            body: pageBody,
+
+            floatingActionButton: isIOS
+                ? Container()
+                : FloatingActionButton(
+                    onPressed: _startAddExpense,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: Icon(Icons.add),
+                  ),
+          );
   }
 }
