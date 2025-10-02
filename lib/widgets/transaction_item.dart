@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import './transaction_title_date.dart';
 import './transaction_price.dart';
 
-class MyTransaction extends StatelessWidget {
+class MyTransactionItem extends StatelessWidget {
   final String? title;
   final DateTime? date;
   final double? price;
   final VoidCallback? deleteExpense;
 
-  const MyTransaction({
+  const MyTransactionItem({
     super.key,
     @required this.title,
     @required this.date,
@@ -28,10 +28,10 @@ class MyTransaction extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Price
-            MyTransactionPrice(price: price),
+            MyTransactionItemPrice(price: price),
 
             // Title and Date
-            MyTransactionTitleDate(title: title, date: date),
+            MyTransactionItemTitleDate(title: title, date: date),
 
             // Delete Action
             MediaQuery.of(context).size.width > 460

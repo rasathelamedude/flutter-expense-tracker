@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/transaction_model.dart';
-import './my_transaction.dart';
+import './transaction_item.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction>? userTransactions;
@@ -19,7 +19,7 @@ class TransactionList extends StatelessWidget {
           )
         : ListView.builder(
             itemCount: userTransactions!.length,
-            itemBuilder: (context, index) => MyTransaction(
+            itemBuilder: (context, index) => MyTransactionItem(
               title: userTransactions![index].title,
               date: userTransactions![index].date,
               price: userTransactions![index].price,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class MyTransactionTitleDate extends StatelessWidget {
+class MyTransactionItemTitleDate extends StatelessWidget {
   final String? title;
   final DateTime? date;
 
-  const MyTransactionTitleDate({
+  const MyTransactionItemTitleDate({
     super.key,
     @required this.title,
     @required this.date,

@@ -112,6 +112,66 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  List<Widget> _buildLandscapeContent(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget transactionListWidget,
+  ) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            _showChart == false ? "Show Chart" : "Show Transactions",
+            style: TextStyle(fontSize: 18),
+          ),
+          Switch.adaptive(
+            value: _showChart,
+            onChanged: (value) {
+              setState(() {
+                _showChart = value;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart == true
+          ?
+            // Chart View
+            Container(
+              height:
+                  (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: Chart(recentTransactions: _recentTransactions),
+            )
+          :
+            // Expense List View
+            transactionListWidget,
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget transactionListWidget,
+  ) {
+    return [
+      Container(
+        height:
+            (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.25,
+        margin: EdgeInsets.symmetric(vertical: 5),
+        child: Chart(recentTransactions: _recentTransactions),
+      ),
+      transactionListWidget,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final isIOS = Platform.isIOS;
@@ -152,61 +212,19 @@ class _HomePageState extends State<HomePage> {
         children: [
           // Switch in landscape;
           if (isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _showChart == false ? "Show Chart" : "Show Transactions",
-                  style: TextStyle(fontSize: 18),
-                ),
-                Switch.adaptive(
-                  value: _showChart,
-                  onChanged: (value) {
-                    setState(() {
-                      _showChart = value;
-                    });
-                  },
-                ),
-              ],
+            ..._buildLandscapeContent(
+              mediaQuery,
+              appBar as AppBar,
+              transactionListWidget,
             ),
 
           // Chart in portrait
-          if (!isLandscape) // Chart View
-            Container(
-              height:
-                  (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.25,
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: Chart(recentTransactions: _recentTransactions),
+          if (!isLandscape)
+            ..._buildPortraitContent(
+              mediaQuery,
+              appBar as AppBar,
+              transactionListWidget,
             ),
-
-          // Transaction List in portrait
-          if (!isLandscape) transactionListWidget,
-
-          // Either or case in Landscape
-          if (isLandscape)
-            _showChart == true
-                ?
-                  // Chart View
-                  Container(
-                    height:
-                        (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.7,
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Chart(recentTransactions: _recentTransactions),
-                  )
-                :
-                  // Expense List View
-                  Expanded(
-                    child: TransactionList(
-                      userTransactions: userTransactions,
-                      deleteExpense: deleteTransaction,
-                    ),
-                  ),
         ],
       ),
     );
