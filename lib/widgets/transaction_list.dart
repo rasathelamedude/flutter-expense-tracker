@@ -17,14 +17,18 @@ class TransactionList extends StatelessWidget {
               return Center(child: Text("No transactions to display..."));
             },
           )
-        : ListView.builder(
-            itemCount: userTransactions!.length,
-            itemBuilder: (context, index) => MyTransactionItem(
-              title: userTransactions![index].title,
-              date: userTransactions![index].date,
-              price: userTransactions![index].price,
-              deleteExpense: () => deleteExpense!(index),
-            ),
+        : ListView(
+            children: [
+              ...userTransactions!.map(
+                (transaction) => MyTransactionItem(
+                  key: ValueKey(transaction.id),
+                  title: transaction.title,
+                  date: transaction.date,
+                  price: transaction.price,
+                  deleteExpense: () => deleteExpense!((transaction.id! - 1)),
+                ),
+              ),
+            ],
           );
   }
 }

@@ -26,8 +26,6 @@ class _TransactionFormState extends State<TransactionForm> {
         ? "You must enter a value"
         : null;
 
-    
-
     if (_titleController.text.isEmpty ||
         _priceController.text.isEmpty ||
         _selectedDate == null) {
@@ -35,7 +33,11 @@ class _TransactionFormState extends State<TransactionForm> {
     }
     Navigator.of(context).pop();
 
-    widget.addTransaction!(_titleController.text, _priceController.text, _selectedDate!);
+    widget.addTransaction!(
+      _titleController.text,
+      _priceController.text,
+      _selectedDate!,
+    );
 
     _titleController.text = "";
     _priceController.text = "";
